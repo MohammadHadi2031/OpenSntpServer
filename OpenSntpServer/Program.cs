@@ -1,5 +1,6 @@
 ﻿using OpenSntpServer.NtpBase;
 using System;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Threading.Tasks;
 
@@ -7,15 +8,11 @@ namespace OpenSntpServer
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            _ = RunSntpServer();
+            await RunSntpServer();
 
-            do
-            {
-                Console.Clear();
-                Console.WriteLine("Press Enter to shutdown");
-            } while (Console.ReadKey().Key != ConsoleKey.Enter);
+            Console.ReadKey();
         }
 
         static async Task RunSntpServer()
@@ -26,7 +23,7 @@ namespace OpenSntpServer
                 var received = await udpServer.ReceiveAsync();
                 var ntpServerPacket = new NtpServerPacket(received.Buffer); //Create the server packet
                 await udpServer.SendAsync(ntpServerPacket.Bytes, NtpServerPacket.RESPONSE_SIZE, received.RemoteEndPoint); //Respond to the client request
-                Console.WriteLine($"Responded to {received.RemoteEndPoint.Address} with {ntpServerPacket.UTCTime.ToLocalTime()}"); //Log the transmitted time 
+                Debug.WriteLine($"Responded to {received.RemoteEndPoint.Address} with {ntpServerPacket.UTCTime.ToLocalTime()}"); //Log the transmitted time 
             }
         }
     }

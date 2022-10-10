@@ -54,7 +54,7 @@ namespace OpenSntpServer.NtpBase
 
         private (uint sec, uint frac) getTimeStamp()
         {
-            var nowUtc = DateTime.Now.ToUniversalTime();
+            var nowUtc = DateTime.Now; //.ToUniversalTime();
             var seconds = (nowUtc.Subtract(BaseDate).TotalSeconds);
             var secs = (uint)Math.Floor(seconds);
             var fractions = (uint)((seconds - secs) * (1UL << 32));
