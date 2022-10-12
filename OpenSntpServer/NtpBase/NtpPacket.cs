@@ -21,8 +21,8 @@ namespace OpenSntpServer.NtpBase
         private DateTime calculateUTCTime()
         {
             
-            ulong seconds = BinaryPrimitives.ReadUInt64BigEndian(Bytes.AsSpan(40, 4));
-            ulong fraction = BinaryPrimitives.ReadUInt64BigEndian(Bytes.AsSpan(44, 4));
+            ulong seconds = BinaryPrimitives.ReadUInt32BigEndian(Bytes.AsSpan(40, 4));
+            ulong fraction = BinaryPrimitives.ReadUInt32BigEndian(Bytes.AsSpan(44, 4));
             var dt = BaseDate.AddSeconds(seconds);
             double ms = (fraction * 1000.0) / (1UL << 32);
             dt.AddMilliseconds(ms);
